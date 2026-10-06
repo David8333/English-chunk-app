@@ -1,89 +1,224 @@
 import random
 import streamlit as st
 
+# 設定網頁標題與排版
 st.set_page_config(
-    page_title="英文語塊學習小工具", page_icon="🧩", layout="centered"
+    page_title="1000個英文母語語塊學習卡", page_icon="🗣️", layout="centered"
 )
 
-st.title("🧩 英文語塊 (Chunks) 學習小工具")
+# 支援語音朗讀的 JavaScript / HTML 小工具
+def speak_text(text):
+  # 使用網覽器內建的 Web Speech API 發音
+  safe_text = text.replace('"', "'")
+  html_code = f"""
+    <script>
+    function speak() {{
+        let utterance = new SpeechSynthesisUtterance("{safe_text}");
+        utterance.lang = 'en-US';
+        utterance.rate = 0.9; // 稍慢一點適合學習
+        window.speechSynthesis.speak(utterance);
+    }}
+    </script>
+    <button onclick="speak()" style="background-color:#4CAF50; color:white; border:none; padding:8px 16px; border-radius:5px; cursor:pointer; font-weight:bold;">
+        🔊 點擊播放發音
+    </button>
+    """
+  st.components.v1.html(html_code, height=50)
+
+
+st.title("🗣️ 1000個英文母語人士常用語塊學習卡")
 st.write(
-    "背單字不如背「語塊」！語塊是母語人士習慣成群使用的字詞組合。請根據提示填入缺少的語塊。"
+    "結合「單字卡翻面、使用情境、發音功能、以及三段實境對話」，幫你真正把語塊用在生活與職場中！"
 )
 
-chunks_data = [
+# 1000個高頻語塊資料庫（此處展示精選核心高頻語塊，架構支援擴充至1000個）
+chunks_database = [
     {
-        "chunk": "take into account",
-        "meaning": "把...考慮進去、顧及",
-        "sentence": "We must _______ all the factors before making a decision.",
+        "id": 1,
+        "category": "職場商務",
+        "chunk": "take something into account",
+        "meaning": "把...納入考量、顧及",
+        "scenario": "適用於決策、規劃、評估專案或提出建議時，強調全面思考。",
+        "dialogues": [
+            (
+                "A: Should we lower the price of our new product?",
+                "我們應該降低新產品的價格嗎？",
+            ),
+            (
+                "B: We need to take production costs into account first.",
+                "我們必須先把生產成本納入考量。",
+            ),
+            (
+                "A: That's a fair point. Let's recalculate.",
+                "說得對。我們重新計算一下。",
+            ),
+        ],
     },
     {
+        "id": 2,
+        "category": "日常溝通",
         "chunk": "shed light on",
-        "meaning": "闡明、使人理解、照亮",
-        "sentence": "The new evidence helped to _______ the mystery.",
+        "meaning": "闡明、使人理解、照亮問題核心",
+        "scenario": "適用於解釋複雜情況、提供新線索或釐清真相時。",
+        "dialogues": [
+            (
+                "A: Do you have any idea why the system crashed?",
+                "你知道系統為什麼當機嗎？",
+            ),
+            (
+                "B: This error log might shed light on the issue.",
+                "這個錯誤記錄檔或許能幫忙釐清這個問題。",
+            ),
+            ("A: Great, let's take a look.", "太好了，我們來看一下。"),
+        ],
     },
     {
-        "chunk": "by and large",
-        "meaning": "大體上、總的來說",
-        "sentence": "_______, it was a successful event.",
-    },
-    {
-        "chunk": "play a pivotal role",
-        "meaning": "扮演關鍵角色",
-        "sentence": "Technology tends to _______ in modern education.",
-    },
-    {
+        "id": 3,
+        "category": "情感表達",
         "chunk": "catch someone off guard",
         "meaning": "殺個措手不及、使人毫無防備",
-        "sentence": "The sudden question managed to _______ her _______.",
+        "scenario": "適用於形容突發狀況、意料之外的問題或驚喜。",
+        "dialogues": [
+            (
+                "A: How did you like the sudden pop quiz today?",
+                "你覺得今天突如其來的隨堂考怎麼樣？",
+            ),
+            (
+                "B: It totally caught me off guard! I hadn't reviewed yet.",
+                "完全把我殺個措手不及！我還沒複習呢。",
+            ),
+            ("A: Haha, me neither.", "哈哈，我也是。"),
+        ],
+    },
+    {
+        "id": 4,
+        "category": "觀點立場",
+        "chunk": "by and large",
+        "meaning": "大體上、總的來說、從各方面來看",
+        "scenario": "適用於宏觀總結、發表整體看法而非絕對細節時。",
+        "dialogues": [
+            (
+                "A: How was the annual conference this year?",
+                "今年的年度會議覺得怎麼樣？",
+            ),
+            (
+                "B: By and large, it was a huge success.",
+                "總的來說，這是一場非常成功的會議。",
+            ),
+            (
+                "A: I agree, the presentations were inspiring.",
+                "我同意，簡報都很有啟發性。",
+            ),
+        ],
+    },
+    {
+        "id": 5,
+        "category": "重要關鍵",
+        "chunk": "play a pivotal role",
+        "meaning": "扮演關鍵核心角色",
+        "scenario": "適用於形容某人、某技術或某因素在成功中不可或缺。",
+        "dialogues": [
+            (
+                "A: Why is communication so emphasized in this project?",
+                "為什麼這個專案這麼強調溝通？",
+            ),
+            (
+                "B: Effective communication plays a pivotal role in teamwork.",
+                "有效溝通在團隊合作中扮演了關鍵角色。",
+            ),
+            ("A: Makes total sense.", "完全講通。"),
+        ],
     },
 ]
 
-if "index" not in st.session_state:
-  st.session_state.index = 0
-if "score" not in st.session_state:
-  st.session_state.score = 0
+# 初始化 Session 狀態
+if "card_index" not in st.session_state:
+  st.session_state.card_index = 0
+if "is_flipped" not in st.session_state:
+  st.session_state.is_flipped = False
 
-current_item = chunks_data[st.session_state.index]
+current_data = chunks_database[st.session_state.card_index]
+
+# 頂部導覽列與進度
+st.markdown(
+    f"### 📚 學習卡片 ({st.session_state.card_index + 1} /"
+    f" {len(chunks_database)})"
+)
+st.progress((st.session_state.card_index + 1) / len(chunks_database))
+
+# 單字卡主體區
+st.markdown("---")
+col_cat, col_id = st.columns([3, 1])
+with col_cat:
+  st.markdown(f"🏷️ **分類主題**：`{current_data['category']}`")
+with col_id:
+  st.markdown(f"**編號**：#{current_data['id']}")
+
+# 正面：顯示英文語塊
+st.markdown(
+    "<div style='background-color:#f0f2f6; padding:20px; border-radius:10px;"
+    " text-align:center; margin-bottom:15px;'>"
+    f"<h2 style='color:#1f77b4; margin:0;'>{current_data['chunk']}</h2>"
+    "</div>",
+    unsafe_allow_html=True,
+)
+
+# 發音按鈕
+speak_text(current_data["chunk"])
 
 st.markdown("---")
-st.subheader(f"第 {st.session_state.index + 1} 題 / 共 {len(chunks_data)} 題")
-st.info(f"💡 **中文意思**：{current_item['meaning']}")
-st.markdown(f"**例句練習**：`{current_item['sentence']}`")
 
-with st.form(key=f"form_{st.session_state.index}"):
-  user_answer = st.text_input(
-      "請輸入正確的英文語塊或缺空字詞："
-  ).strip()
-  submit_btn = st.form_submit_button("提交答案")
+# 翻面按鈕邏輯
+if st.button(
+    "🔄 點擊翻面 / 切換詳細解析", use_container_width=True, type="primary"
+):
+  st.session_state.is_flipped = not st.session_state.is_flipped
 
-  if submit_btn:
-    if (
-        user_answer.lower() in current_item["chunk"].lower()
-        and len(user_answer) > 2
-    ):
-      st.success(
-          f"答對了！🎉 完整的正確語塊是：**{current_item['chunk']}**"
-      )
-      st.session_state.score += 1
-    else:
-      st.error(
-          f"答錯囉！正確的語塊應為：**{current_item['chunk']}**"
-      )
+# 如果翻面，顯示詳細中文、情境與對話
+if st.session_state.is_flipped:
+  st.success(f"🇹🇼 **中文解釋**：{current_data['meaning']}")
+  st.info(f"💡 **使用情境**：{current_data['scenario']}")
 
-col1, col2 = st.columns(2)
+  st.markdown("### 💬 三段實境應用對話")
+  for i, (en_sent, zh_sent) in enumerate(current_data["dialogues"], 1):
+    with st.container():
+      st.markdown(f"**對話 {i}**")
+      st.markdown(f"> 👤 `{en_sent}`")
+      st.markdown(f"> 🗣️ *{zh_sent}*")
+      # 對話單句發音
+      speak_text(en_sent)
+      st.write("")
+
+# 底部切換控制按鈕
+st.markdown("---")
+col1, col2, col3 = st.columns(3)
+
 with col1:
-  if st.button("下一題"):
-    if st.session_state.index < len(chunks_data) - 1:
-      st.session_state.index += 1
+  if st.button("⬅️ 上一張"):
+    if st.session_state.card_index > 0:
+      st.session_state.card_index -= 1
+      st.session_state.is_flipped = False
       st.rerun()
-    else:
-      st.warning("已經是最後一題囉！")
 
 with col2:
-  if st.button("重新開始"):
-    st.session_state.index = 0
-    st.session_state.score = 0
+  if st.button("🔀 隨機抽卡"):
+    st.session_state.card_index = random.randint(
+        0, len(chunks_database) - 1
+    )
+    st.session_state.is_flipped = False
     st.rerun()
 
+with col3:
+  if st.button("下一張 ➡️"):
+    if st.session_state.card_index < len(chunks_database) - 1:
+      st.session_state.card_index += 1
+      st.session_state.is_flipped = False
+      st.rerun()
+    else:
+      st.success("🎉 恭喜你學完這批語塊了！")
+
 st.markdown("---")
-st.write(f"目前累計得分：**{st.session_state.score}** 分")
+st.caption(
+    "💡 提示：你可以隨時在 GitHub 的 `app.py` 裡擴充更多語塊資料，打造屬於你"
+    "自己的 1000 個語塊庫！"
+)
