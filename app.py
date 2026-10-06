@@ -1,10 +1,10 @@
 import random
+from chunks_data import chunks_database
 import streamlit as st
-from chunks_data import ALL_CHUNKS  # 從我們剛建立的檔案匯入語塊資料庫
 
 # 設定網頁標題與排版
 st.set_page_config(
-    page_title="500個母語人士高頻語塊特訓", page_icon="🚀", layout="centered"
+    page_title="10個高頻語塊口說特訓", page_icon="🚀", layout="centered"
 )
 
 
@@ -27,14 +27,10 @@ def speak_text(text, key_suffix=""):
   st.components.v1.html(html_code, height=45)
 
 
-st.title("🚀 500個母語人士高頻語塊口說特訓庫")
+st.title("🚀 10個母語人士高頻語塊口說特訓庫")
 st.write(
-    f"目前題庫已載入 **{len(ALL_CHUNKS)}** 個核心高頻語塊！隨著你在"
-    " `chunks_data.py` 增加內容，這裡會自動同步擴充。"
+    "專為打造英文流利度設計！本工具透過獨立資料檔載入 10 個高頻語塊與發音功能。"
 )
-
-# 使用獨立的語塊資料庫
-chunks_database = ALL_CHUNKS
 
 # 初始化 Session 狀態
 if "card_index" not in st.session_state:
@@ -124,7 +120,7 @@ st.markdown("---")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-  if st.button("⬅️ 上一張"):
+  if st.button("⬅ 上一張"):
     if st.session_state.card_index > 0:
       st.session_state.card_index -= 1
       st.session_state.is_flipped = False
@@ -146,7 +142,4 @@ with col3:
       st.success("🎉 太棒了！你已經看完這個分類的所有卡片了！")
 
 st.markdown("---")
-st.caption(
-    "💡 採用外部資料庫架構 (`chunks_data.py`)，讓你可以無限擴充到 500 個語塊"
-    "而不用擔心主程式過大！"
-)
+st.caption("💡 透過 `from chunks_data import chunks_database` 成功串接！")
