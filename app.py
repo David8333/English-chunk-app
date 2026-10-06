@@ -1,10 +1,9 @@
 import random
-from chunks_data import chunks_database
 import streamlit as st
 
 # 設定網頁標題與排版
 st.set_page_config(
-    page_title="10個高頻語塊口說特訓", page_icon="🚀", layout="centered"
+    page_title="50個高頻語塊口說特訓", page_icon="🚀", layout="centered"
 )
 
 
@@ -27,10 +26,707 @@ def speak_text(text, key_suffix=""):
   st.components.v1.html(html_code, height=45)
 
 
-st.title("🚀 10個母語人士高頻語塊口說特訓庫")
+st.title("🚀 50個母語人士高頻語塊口說特訓庫")
 st.write(
-    "專為打造英文流利度設計！本工具透過獨立資料檔載入 10 個高頻語塊與發音功能。"
+    "專為打造英文流利度設計！本工具完整收錄 50 個高頻語塊，並搭配真實情境對話與發音功能。"
 )
+
+# 完整 50 個高頻語塊資料庫
+chunks_database = [
+    {
+        "id": 1,
+        "category": "強烈認同 / 附和",
+        "chunk": "tell me about it",
+        "meaning": "可不是嗎、說得太對了、我超懂這種感覺",
+        "scenario": "當別人抱怨或說中你的心聲時，比說 'I agree' 道地一百倍。",
+        "dialogues": [
+            (
+                "Traffic is absolute nightmare this morning.",
+                "今早的交通簡直是場惡夢。",
+            ),
+            (
+                "Tell me about it! I was stuck for over an hour.",
+                "可不是嗎！我卡了一個多小時。",
+            ),
+            ("I'm definitely taking the subway tomorrow.", "我明天絕對要改搭地鐵。"),
+        ],
+    },
+    {
+        "id": 2,
+        "category": "坦承 / 說實話",
+        "chunk": "to be honest with you",
+        "meaning": "老實跟你說、坦白講",
+        "scenario": "準備發表真心話、給予誠實建議或稍微反駁時的常用開場白。",
+        "dialogues": [
+            ("Do you think my new haircut looks okay?", "你覺得我新剪的頭髮好看嗎？"),
+            (
+                "To be honest with you, it's a bit too short on the sides.",
+                "老實跟你說，兩側真的剪得有點太短了。",
+            ),
+            ("Ah, well, hair grows back!", "啊,好吧,頭髮會再長長嘛!"),
+        ],
+    },
+    {
+        "id": 3,
+        "category": "狀況外 / 忘記了",
+        "chunk": "slip one's mind",
+        "meaning": "一時忘記、腦袋當機沒想起來",
+        "scenario": "忘記某件事時，用來委婉表達「我不是故意忘記的」。",
+        "dialogues": [
+            ("Did you send the report to the boss?", "你有把報告寄給老闆嗎？"),
+            (
+                "Oh no! It completely slipped my mind. I'll do it right now.",
+                "糟糕！我完全忘得精光。我馬上處理。",
+            ),
+            ("Hurry up before she asks about it.", "趁她問起之前快點。"),
+        ],
+    },
+    {
+        "id": 4,
+        "category": "隨性 / 看情況",
+        "chunk": "play it by ear",
+        "meaning": "走一步算一步、看情況再決定",
+        "scenario": "當行程或計畫還沒定案，想保留彈性時使用。",
+        "dialogues": [
+            ("What's the plan for this Saturday?", "這禮拜六有什麼計畫？"),
+            (
+                "We haven't booked anything yet. Let's just play it by ear.",
+                "我們還沒訂位。到時候看狀況再決定吧。",
+            ),
+            ("Sounds good, let me know.", "聽起來不錯，再跟我說。"),
+        ],
+    },
+    {
+        "id": 5,
+        "category": "打圓場 / 緩解尷尬",
+        "chunk": "break the ice",
+        "meaning": "破冰、打破僵局",
+        "scenario": "在陌生場合、聚會開頭或會議剛開始時炒熱氣氛。",
+        "dialogues": [
+            (
+                "Everyone was so quiet when the meeting started.",
+                "會議剛開始時大家安靜得可怕。",
+            ),
+            (
+                "Fortunately, John told a funny joke to break the ice.",
+                "幸好約翰講了一個好笑的笑話來破冰。",
+            ),
+            ("That really saved the atmosphere.", "那真的拯救了整個氣氛。"),
+        ],
+    },
+    {
+        "id": 6,
+        "category": "形容麻煩 / 找罪受",
+        "chunk": "go out of one's way",
+        "meaning": "特地、格外費心去幫忙或做事",
+        "scenario": "用來稱讚某人特別熱心，或表達自己為某事付出了額外心力。",
+        "dialogues": [
+            ("Thank you so much for picking me up at the station.", "太謝謝你特地去車站接我了。"),
+            (
+                "No problem at all. I didn't mind going out of my way.",
+                "完全沒問題。我一點也不介意特地跑一趟。",
+            ),
+            ("I really appreciate your kindness.", "我很感激你的好意。"),
+        ],
+    },
+    {
+        "id": 7,
+        "category": "應付 / 勉強過得去",
+        "chunk": "make ends meet",
+        "meaning": "勉強維持生計、收支打平",
+        "scenario": "討論生活開銷、經濟壓力或物價上漲時非常道地的說法。",
+        "dialogues": [
+            (
+                "With the rent going up, it's getting harder to live here.",
+                "隨著房租上漲，在這裡生活越來越不容易了。",
+            ),
+            (
+                "Yeah, working two jobs is the only way to make ends meet.",
+                "對啊，打兩份工是勉強維持生計的唯一辦法。",
+            ),
+            ("Inflation is really hurting everyone.", "通膨真的在傷害每個人。"),
+        ],
+    },
+    {
+        "id": 8,
+        "category": "關鍵轉折 / 話鋒一轉",
+        "chunk": "at the end of the day",
+        "meaning": "到頭來、說到底、歸根結底",
+        "scenario": "在經歷一連串討論後，準備做最後總結或點出核心本質時使用。",
+        "dialogues": [
+            (
+                "We had so many arguments about the marketing strategy.",
+                "我們針對行銷策略爭論了超多次。",
+            ),
+            (
+                "At the end of the day, customer satisfaction matters most.",
+                "說到底，客戶滿意度才是最重要的。",
+            ),
+            ("I completely agree with that conclusion.", "我完全同意這個結論。"),
+        ],
+    },
+    {
+        "id": 9,
+        "category": "輕鬆看待 / 別緊張",
+        "chunk": "take something with a grain of salt",
+        "meaning": "半信半疑、聽聽就好、別太當真",
+        "scenario": "當聽到網路傳聞、八卦或不可靠的來源時提醒別人。",
+        "dialogues": [
+            ("Did you hear that the company might cut bonuses?", "你有聽說公司可能會砍獎金嗎？"),
+            (
+                "I read it online, but I'm taking it with a grain of salt.",
+                "我是上網看到的，但我抱持半信半疑的態度。",
+            ),
+            ("Better wait for an official announcement.", "最好等官方宣佈再說。"),
+        ],
+    },
+    {
+        "id": 10,
+        "category": "全神貫注 / 專心",
+        "chunk": "all ears",
+        "meaning": "洗耳恭聽、全神貫注聽你說",
+        "scenario": "當別人說「我有個好消息要跟你說」時表達高度興趣。",
+        "dialogues": [
+            ("I have a brilliant idea for our upcoming project.", "我對接下來的專案有個超棒的點子。"),
+            ("Go ahead, I'm all ears!", "說吧，我洗耳恭聽！"),
+            ("Let's hear what you've got.", "聽聽看你有什麼想法。"),
+        ],
+    },
+    {
+        "id": 11,
+        "category": "職場商務",
+        "chunk": "take something into account",
+        "meaning": "把...納入考量、顧及",
+        "scenario": "適用於決策、規劃、評估專案或提出建議時，強調全面思考。",
+        "dialogues": [
+            (
+                "Should we lower the price of our new product?",
+                "我們應該降低新產品的價格嗎？",
+            ),
+            (
+                "We need to take production costs into account first.",
+                "我們必須先把生產成本納入考量。",
+            ),
+            ("That's a fair point. Let's recalculate.", "說得對。我們重新計算一下。"),
+        ],
+    },
+    {
+        "id": 12,
+        "category": "職場商務",
+        "chunk": "shed light on",
+        "meaning": "闡明、使人理解、照亮問題核心",
+        "scenario": "適用於解釋複雜情況、提供新線索或釐清真相時。",
+        "dialogues": [
+            (
+                "Do you have any idea why the system crashed?",
+                "你知道系統為什麼當機嗎？",
+            ),
+            (
+                "This error log might shed light on the issue.",
+                "這個錯誤記錄檔或許能幫忙釐清這個問題。",
+            ),
+            ("Great, let's take a look.", "太好了，我們來看一下。"),
+        ],
+    },
+    {
+        "id": 13,
+        "category": "觀點立場",
+        "chunk": "by and large",
+        "meaning": "大體上、總的來說、從各方面來看",
+        "scenario": "適用於宏觀總結、發表整體看法而非絕對細節時。",
+        "dialogues": [
+            (
+                "How was the annual conference this year?",
+                "今年的年度會議覺得怎麼樣？",
+            ),
+            (
+                "By and large, it was a huge success.",
+                "總的來說，這是一場非常成功的會議。",
+            ),
+            (
+                "I agree, the presentations were inspiring.",
+                "我同意，簡報都很有啟發性。",
+            ),
+        ],
+    },
+    {
+        "id": 14,
+        "category": "重要關鍵",
+        "chunk": "play a pivotal role",
+        "meaning": "扮演關鍵核心角色",
+        "scenario": "適用於形容某人、某技術或某因素在成功中不可或缺。",
+        "dialogues": [
+            (
+                "Why is communication so emphasized in this project?",
+                "為什麼這個專案這麼強調溝通？",
+            ),
+            (
+                "Effective communication plays a pivotal role in teamwork.",
+                "有效溝通在團隊合作中扮演了關鍵角色。",
+            ),
+            ("Makes total sense.", "完全講通。"),
+        ],
+    },
+    {
+        "id": 15,
+        "category": "突發狀況",
+        "chunk": "catch someone off guard",
+        "meaning": "殺個措手不及、使人毫無防備",
+        "scenario": "適用於形容突發狀況、意料之外的問題或驚喜。",
+        "dialogues": [
+            (
+                "How did you like the sudden pop quiz today?",
+                "你覺得今天突如其來的隨堂考怎麼樣？",
+            ),
+            (
+                "It totally caught me off guard! I hadn't reviewed yet.",
+                "完全把我殺個措手不及！我還沒複習呢。",
+            ),
+            ("Haha, me neither.", "哈哈，我也是。"),
+        ],
+    },
+    {
+        "id": 16,
+        "category": "日常生活",
+        "chunk": "out of the blue",
+        "meaning": "出乎意料地、毫無預兆地",
+        "scenario": "用來形容某件事或某人無預警地突然出現或發生。",
+        "dialogues": [
+            (
+                "Guess who called me yesterday out of the blue?",
+                "你猜昨天誰莫名其妙打給我？",
+            ),
+            ("Who? An old friend from high school?", "誰？高中老朋友嗎？"),
+            ("Exactly, I haven't heard from him in years.", "沒錯，我已經好幾年沒他的消息了。"),
+        ],
+    },
+    {
+        "id": 17,
+        "category": "情緒反應",
+        "chunk": "drive someone crazy",
+        "meaning": "把某人搞瘋、讓人快抓狂",
+        "scenario": "當某個噪音、重複的事情或行為讓人極度不耐煩時使用。",
+        "dialogues": [
+            (
+                "That dripping faucet is driving me crazy.",
+                "那個滴水的水龍頭快把我搞瘋了。",
+            ),
+            (
+                "Why don't you call a plumber to fix it?",
+                "你怎麼不叫個水電工來修？",
+            ),
+            ("I'm planning to do it this afternoon.", "我打算今天下午處理。"),
+        ],
+    },
+    {
+        "id": 18,
+        "category": "決定與行動",
+        "chunk": "call it a day",
+        "meaning": "今天就到這裡、收工、下班",
+        "scenario": "當工作告一段落，準備結束營業或離開辦公室時說的話。",
+        "dialogues": [
+            ("It's already 8 PM. Are we still working?", "已經晚上八點了。我們還在工作嗎？"),
+            ("I'm exhausted. Let's call it a day.", "我累垮了。今天就到這裡吧。"),
+            ("Awesome, see you tomorrow.", "太棒了，明天見。"),
+        ],
+    },
+    {
+        "id": 19,
+        "category": "職場商務",
+        "chunk": "get down to business",
+        "meaning": "言歸正傳、開始談正事",
+        "scenario": "閒聊結束、準備進入正式會議或討論核心議題時使用。",
+        "dialogues": [
+            ("We've had enough small talk.", "我們閒聊得差不多了。"),
+            (
+                "Let's get down to business and review the budget.",
+                "我們言歸正傳，來審查預算吧。",
+            ),
+            ("Sure, here is the financial report.", "好的，這是財務報告。"),
+        ],
+    },
+    {
+        "id": 20,
+        "category": "困難挑戰",
+        "chunk": "an uphill battle",
+        "meaning": "一場艱苦的戰鬥、極具挑戰性的任務",
+        "scenario": "形容事情推展非常費力、阻礙重重。",
+        "dialogues": [
+            ("Trying to quit sugar completely is so hard.", "要完全戒糖真的好難。"),
+            (
+                "I know, it's an uphill battle at first.",
+                "我知道，一開始真的是一場硬仗。",
+            ),
+            ("I'll try my best to stick with it.", "我會盡量堅持下去。"),
+        ],
+    },
+    {
+        "id": 21,
+        "category": "觀點立場",
+        "chunk": "miss the point",
+        "meaning": "搞錯重點、抓不到核心意思",
+        "scenario": "當別人誤解了你的話或偏離了主要爭論焦點時使用。",
+        "dialogues": [
+            ("You shouldn't buy such an expensive car.", "你不該買這麼貴的車。"),
+            ("You're missing the point. It's an investment for my job.", "你搞錯重點了。這是我工作的投資。"),
+            ("Well, if you say so.", "好吧，如果你這麼說的話。"),
+        ],
+    },
+    {
+        "id": 22,
+        "category": "情緒反應",
+        "chunk": "on top of the world",
+        "meaning": "得意洋洋、非常開心、爽快極了",
+        "scenario": "當你贏得比賽、獲得升遷或心情好到極點時的道地表達。",
+        "dialogues": [
+            ("How do you feel after winning the competition?", "贏得比賽後你感覺怎麼樣？"),
+            ("I feel like I'm on top of the world!", "我覺得我簡直爽到上天堂！"),
+            ("You truly deserve it.", "你實至名歸。"),
+        ],
+    },
+    {
+        "id": 23,
+        "category": "日常生活",
+        "chunk": "cost an arm and a leg",
+        "meaning": "貴得要命、花費極大代價",
+        "scenario": "形容某樣東西或服務價格超級昂貴。",
+        "dialogues": [
+            ("Did you see the price of that new smartphone?", "你有看到那支新智慧型手機的價格嗎？"),
+            ("Yeah, it costs an arm and a leg.", "對啊，貴得要命。"),
+            ("I guess I'll keep my old phone.", "我猜我還是留著舊手機就好。"),
+        ],
+    },
+    {
+        "id": 24,
+        "category": "隨性 / 看情況",
+        "chunk": "up in the air",
+        "meaning": "懸而未決、尚未確定",
+        "scenario": "當計畫、安排或未來動向充滿不確定性時使用。",
+        "dialogues": [
+            ("Is our vacation trip to Japan confirmed?", "我們去日本的假期確定了嗎？"),
+            ("Not yet, our flight schedules are still up in the air.", "還沒，我們的航班時間還沒敲定。"),
+            ("Hope it gets settled soon.", "希望趕快定下來。"),
+        ],
+    },
+    {
+        "id": 25,
+        "category": "強烈認同 / 附和",
+        "chunk": "you can say that again",
+        "meaning": "說得一點也沒錯、完全同意",
+        "scenario": "比單純的 'I agree' 更強烈、更口語的附和用法。",
+        "dialogues": [
+            ("The local food here is just phenomenal.", "這裡的在地美食簡直一絕。"),
+            ("You can say that again! I love every bite.", "說得一點也沒錯！我每一口都愛。"),
+            ("Let's come back again tomorrow.", "我們明天再來吃一次吧。"),
+        ],
+    },
+    {
+        "id": 26,
+        "category": "坦承 / 說實話",
+        "chunk": "face the music",
+        "meaning": "面對現實、承擔後果",
+        "scenario": "當犯了錯或搞砸事情後，必須硬著頭皮承擔批評或懲罰時。",
+        "dialogues": [
+            ("I broke my mom's favorite vase.", "我打破了我媽最喜歡的花瓶。"),
+            ("You better confess and face the music.", "你最好去坦白並承擔後果。"),
+            ("I know, I'm doomed.", "我知道，我死定了。"),
+        ],
+    },
+    {
+        "id": 27,
+        "category": "職場商務",
+        "chunk": "ball is in your court",
+        "meaning": "球在妳手上、輪到你做決定了",
+        "scenario": "當你已經完成你的部分，接下來看對方要採取什麼行動時。",
+        "dialogues": [
+            ("I've sent you the revised contract proposal.", "我把修改後的合約提案寄給你了。"),
+            ("Got it, the ball is in my court now.", "收到，接下來輪到我這邊處理了。"),
+            ("Take your time to review.", "慢慢審閱沒關係。"),
+        ],
+    },
+    {
+        "id": 28,
+        "category": "日常生活",
+        "chunk": "under the weather",
+        "meaning": "身體不舒服、有點小感冒",
+        "scenario": "當你感覺精神不濟、感冒或身體微恙時的委婉說法。",
+        "dialogues": [
+            ("Why didn't Mark come to work today?", "馬克今天怎麼沒來上班？"),
+            ("He is feeling a bit under the weather.", "他感覺身體有點不舒服。"),
+            ("Hope he gets well soon.", "希望他早日康復。"),
+        ],
+    },
+    {
+        "id": 29,
+        "category": "觀點立場",
+        "chunk": "easier said than done",
+        "meaning": "說得容易做起來難",
+        "scenario": "當聽到某個理想化的建議，但實踐起來充滿難度時使用。",
+        "dialogues": [
+            ("Just save half of your salary every month.", "每個月存下一半薪水就好了啊。"),
+            ("That's easier said than done with these bills.", "面對這些帳單，說得容易做起來難啊。"),
+            ("True, expenses add up fast.", "也是，開銷累積得很快。"),
+        ],
+    },
+    {
+        "id": 30,
+        "category": "突發狀況",
+        "chunk": "spill the beans",
+        "meaning": "洩露秘密、說溜嘴",
+        "scenario": "當有人不小心把驚喜或機密講出來時使用。",
+        "dialogues": [
+            ("Who told Sarah about the surprise party?", "誰跟莎拉講了驚喜派對的事？"),
+            ("John accidentally spilled the beans.", "約翰不小心說溜嘴了。"),
+            ("Oh well, the secret is out.", "好吧，祕密曝光了。"),
+        ],
+    },
+    {
+        "id": 31,
+        "category": "情緒反應",
+        "chunk": "bitten off more than one can chew",
+        "meaning": "承擔超出能力範圍的事、不自量力",
+        "scenario": "當答應了太多工作或超過負荷的任務時使用。",
+        "dialogues": [
+            ("I'm working on three projects simultaneously now.", "我現在同時在做三個專案。"),
+            ("Sounds like you've bitten off more than one can chew.", "聽起來你好像接了超過自己能力負荷的工作。"),
+            ("I'm drowning in deadlines.", "我快被死線淹沒了。"),
+        ],
+    },
+    {
+        "id": 32,
+        "category": "日常生活",
+        "chunk": "hit the nail on the head",
+        "meaning": "說得精準、完全命中要害",
+        "scenario": "當別人一針見血地指出問題核心時大力稱讚。",
+        "dialogues": [
+            (
+                "Our main problem is lack of clear communication.",
+                "我們的主要問題是缺乏清晰的溝通。",
+            ),
+            ("You hit the nail on the head.", "你完全說中要害了。"),
+            ("We need to fix that immediately.", "我們得馬上修正。"),
+        ],
+    },
+    {
+        "id": 33,
+        "category": "職場商務",
+        "chunk": "back to the drawing board",
+        "meaning": "重新來過、從長計議",
+        "scenario": "當原本的計畫失敗，必須推翻重來時使用。",
+        "dialogues": [
+            ("The client rejected our initial design concept.", "客戶拒絕了我們的初步設計概念。"),
+            (
+                "Well, back to the drawing board then.",
+                "好吧，那我們只好從頭來過了。",
+            ),
+            ("Let's brainstorm new ideas tomorrow.", "我們明天腦力激盪新點子。"),
+        ],
+    },
+    {
+        "id": 34,
+        "category": "情緒反應",
+        "chunk": "burn the midnight oil",
+        "meaning": "熬夜念書或趕工",
+        "scenario": "形容為了準備考試或專案而深夜挑燈奮戰。",
+        "dialogues": [
+            ("You look so tired this morning.", "你今天早上看起來好累。"),
+            ("I was burning the midnight oil for the final exam.", "我昨晚為了期末考熬夜苦讀。"),
+            ("Make sure you get some rest tonight.", "今晚記得好好休息。"),
+        ],
+    },
+    {
+        "id": 35,
+        "category": "觀點立場",
+        "chunk": "read between the lines",
+        "meaning": "看出言外之意、體會潛台詞",
+        "scenario": "當別人沒有明講，但你要從字裡行間或語氣聽出真實含意時。",
+        "dialogues": [
+            ("Did the manager say I got the promotion?", "經理有說我升遷了嗎？"),
+            ("Not explicitly, but reading between the lines, yes.", "他沒有明說，但從字裡行間聽得出來，是的。"),
+            ("That's fantastic news!", "真是太棒的消息了！"),
+        ],
+    },
+    {
+        "id": 36,
+        "category": "隨性 / 看情況",
+        "chunk": "take it easy",
+        "meaning": "放輕鬆、別太緊張、好好休息",
+        "scenario": "叫別人放慢腳步、放鬆心情或向朋友道別時使用。",
+        "dialogues": [
+            ("I've been working non-stop for two weeks.", "我已經連續工作兩周沒停過。"),
+            ("You should take it easy this weekend.", "你這周末應該好好放鬆休息。"),
+            ("I plan to stay in bed all day.", "我打算賴在床上一整天。"),
+        ],
+    },
+    {
+        "id": 37,
+        "category": "強烈認同 / 附和",
+        "chunk": "hit the spot",
+        "meaning": "正中下懷、爽快、非常合心意",
+        "scenario": "當吃到想很久的美食或喝到冰涼飲料時脫口而出的讚美。",
+        "dialogues": [
+            ("How is the iced coffee?", "冰咖啡怎麼樣？"),
+            ("Ah, this really hits the spot on a hot day.", "啊！在大熱天喝這個真是一絕、超解渴。"),
+            ("Glad you like it.", "很高興你喜歡。"),
+        ],
+    },
+    {
+        "id": 38,
+        "category": "職場商務",
+        "chunk": "get the ball rolling",
+        "meaning": "把活動或計畫開展起來、拉開序幕",
+        "scenario": "當大家都在乾等時，主動跨出第一步來啟動事情。",
+        "dialogues": [
+            ("Who wants to start the presentation?", "誰要開始做簡報？"),
+            ("I can get the ball rolling if you like.", "如果你不介意的話，我可以來開個頭。"),
+            ("Please go ahead.", "請開始吧。"),
+        ],
+    },
+    {
+        "id": 39,
+        "category": "日常生活",
+        "chunk": "miss the boat",
+        "meaning": "錯失良機、錯過好機會",
+        "scenario": "因為猶豫不決而錯過了登記、特賣會或好機會時。",
+        "dialogues": [
+            ("Did you buy tickets for the concert?", "你有買到演唱會門票嗎？"),
+            ("No, I waited too long and missed the boat.", "沒有，我等太久了，票全賣光錯失機會了。"),
+            ("That's too unfortunate.", "太遺憾了。"),
+        ],
+    },
+    {
+        "id": 40,
+        "category": "突發狀況",
+        "chunk": "add insult to injury",
+        "meaning": "雪上加霜、在傷口上灑鹽",
+        "scenario": "當原本就很倒楣時，又發生了更糟的事。",
+        "dialogues": [
+            ("I missed my bus this morning.", "我今天早上錯過公車。"),
+            ("And to add insult to injury, it started pouring rain.", "更雪上加霜的是，竟然開始下起傾盆大雨。"),
+            ("What a miserable morning.", "真是個悲慘的早晨。"),
+        ],
+    },
+    {
+        "id": 41,
+        "category": "情緒反應",
+        "chunk": "walking on eggshells",
+        "meaning": "如履薄冰、戰戰兢兢",
+        "scenario": "形容在某個脾氣暴躁的人身邊，講話做事都得極度小心翼翼。",
+        "dialogues": [
+            ("Why is everyone so quiet in the office?", "辦公室大家怎麼都這麼安靜？"),
+            ("The boss is in a bad mood, we're all walking on eggshells.", "老闆心情不好，大家現在都戰戰兢兢的。"),
+            ("Better keep a low profile.", "最好低調一點。"),
+        ],
+    },
+    {
+        "id": 42,
+        "category": "觀點立場",
+        "chunk": "on the fence",
+        "meaning": "騎牆觀望、猶豫不決、拿不定主意",
+        "scenario": "當被問到立場或選擇時，還在兩個選項之間擺盪。",
+        "dialogues": [
+            ("Which candidate are you voting for?", "你要投給哪位候選人？"),
+            ("I'm still on the fence, need to check their policies.", "我還在觀望，得看一下他們的政策。"),
+            ("Take your time to decide.", "慢慢決定不急。"),
+        ],
+    },
+    {
+        "id": 43,
+        "category": "職場商務",
+        "chunk": "cut to the chase",
+        "meaning": "開門見山、切入正題",
+        "scenario": "當不想聽過多廢話，想請對方直接講重點時。",
+        "dialogues": [
+            ("We have very limited time today.", "我們今天時間非常有限。"),
+            ("Let's cut to the chase and discuss the budget.", "我們開門見山，直接討論預算吧。"),
+            ("Agreed. Here are the figures.", "同意。這是數字。"),
+        ],
+    },
+    {
+        "id": 44,
+        "category": "日常生活",
+        "chunk": "piece of cake",
+        "meaning": "一塊蛋糕、易如反掌、非常簡單",
+        "scenario": "形容某個任務或考試簡單到不行。",
+        "dialogues": [
+            ("Was the English proficiency test difficult?", "英文檢定考很難嗎？"),
+            ("Not at all, it was a piece of cake.", "一點也不，簡單得像一塊蛋糕。"),
+            ("That's awesome news.", "真是太棒了。"),
+        ],
+    },
+    {
+        "id": 45,
+        "category": "情緒反應",
+        "chunk": "bend over backwards",
+        "meaning": "全力以赴、竭盡所能去幫忙",
+        "scenario": "形容為了滿足別人的需求而付出極大的努力與配合。",
+        "dialogues": [
+            ("Thank you for sorting out this crisis for me.", "謝謝你幫我解決這場危機。"),
+            ("No problem, I had to bend over backwards to fix it.", "沒事，我得全力以赴才能搞定它。"),
+            ("I owe you one.", "我欠你一個人情。"),
+        ],
+    },
+    {
+        "id": 46,
+        "category": "觀點立場",
+        "chunk": "speak of the devil",
+        "meaning": "說曹操曹操到",
+        "scenario": "當你剛好在議論某人，結果那個人突然出現時說的話。",
+        "dialogues": [
+            ("We were just talking about your brilliant marketing plan.", "我們剛剛才在討論你的優秀行銷計畫。"),
+            ("Speak of the devil! What did you say?", "說曹操曹操到！你們說了什麼？"),
+            ("Only good things, I promise.", "只有好話，我發誓。"),
+        ],
+    },
+    {
+        "id": 47,
+        "category": "職場商務",
+        "chunk": "learn the ropes",
+        "meaning": "熟悉環境、摸清門道、學習基本操作",
+        "scenario": "剛進新公司或接觸新領域時，學習如何運作的階段。",
+        "dialogues": [
+            ("How are you liking your new job?", "你覺得新工作怎麼樣？"),
+            ("It's good, still trying to learn the ropes.", "還不錯，還在努力摸索熟悉環境。"),
+            ("You'll get used to it soon.", "你很快就會習慣的。"),
+        ],
+    },
+    {
+        "id": 48,
+        "category": "日常生活",
+        "chunk": "beat around the bush",
+        "meaning": "旁敲側擊、拐彎抹角、話說不到重點",
+        "scenario": "當別人吞吞吐吐、不肯直接把話說清楚時使用。",
+        "dialogues": [
+            ("Just tell me the truth directly.", "直接跟我說實話吧。"),
+            ("Stop beating around the bush.", "別再拐彎抹角了。"),
+            ("Well, I'm afraid you didn't pass the audition.", "好吧，我怕你沒通過試鏡。"),
+        ],
+    },
+    {
+        "id": 49,
+        "category": "強烈認同 / 附和",
+        "chunk": "spot on",
+        "meaning": "完全正確、精準無誤",
+        "scenario": "當別人的猜測或分析完全符合事實時的讚賞。",
+        "dialogues": [
+            ("Do you think our sales will drop next quarter?", "你覺得我們下季業績會下滑嗎？"),
+            ("Your analysis is spot on.", "你的分析完全精準。"),
+            ("We need to adjust our strategy now.", "我們現在得調整策略。"),
+        ],
+    },
+    {
+        "id": 50,
+        "category": "情緒反應",
+        "chunk": "on cloud nine",
+        "meaning": "欣喜若狂、樂不可支、極度快樂",
+        "scenario": "形容遇到超棒的好事，整個人沉浸在極度喜悅中。",
+        "dialogues": [
+            ("She looked so happy when she received the ring.", "她收到戒指時看起來超開心。"),
+            ("She was on cloud nine all evening.", "她整晚都開心得快飛上天了。"),
+            ("I'm so happy for them.", "我替他們感到好高興。"),
+        ],
+    },
+]
 
 # 初始化 Session 狀態
 if "card_index" not in st.session_state:
@@ -39,7 +735,7 @@ if "is_flipped" not in st.session_state:
   st.session_state.is_flipped = False
 
 # 側邊欄分類導航
-st.sidebar.title("🗂️ 語塊導航選單")
+st.sidebar.title("🗂️ 50語塊導航選單")
 category_list = ["全部顯示"] + list(
     set([item["category"] for item in chunks_database])
 )
@@ -120,7 +816,7 @@ st.markdown("---")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-  if st.button("⬅ 上一張"):
+  if st.button("⬅️️ 上一張"):
     if st.session_state.card_index > 0:
       st.session_state.card_index -= 1
       st.session_state.is_flipped = False
@@ -142,4 +838,6 @@ with col3:
       st.success("🎉 太棒了！你已經看完這個分類的所有卡片了！")
 
 st.markdown("---")
-st.caption("💡 透過 `from chunks_data import chunks_database` 成功串接！")
+st.caption(
+    "💡 50 個高頻語塊已全部內建完畢！只要點擊左上角的 `>>` 即可隨時切換主題分類。"
+)
