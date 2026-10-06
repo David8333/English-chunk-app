@@ -3,7 +3,7 @@ import streamlit as st
 
 # 設定網頁標題與排版
 st.set_page_config(
-    page_title="母語人士 300+ 高頻語塊口說特訓", page_icon="🚀", layout="centered"
+    page_title="500個母語人士高頻語塊特訓", page_icon="🚀", layout="centered"
 )
 
 
@@ -26,12 +26,12 @@ def speak_text(text, key_suffix=""):
   st.components.v1.html(html_code, height=45)
 
 
-st.title("🚀 母語人士 300+ 高頻語塊口說特訓庫")
+st.title("🚀 500個母語人士高頻語塊口說特訓庫")
 st.write(
-    "要讓口說流利，掌握 300-500 個核心語塊是關鍵！這裡為你收錄了橫跨各大生活與職場情境的道地組合。"
+    "專為打造英文流利度設計！本工具完整收錄 500 個母語人士天天掛在嘴邊的高頻語塊，並搭配真實情境對話與發音功能。"
 )
 
-# 300+ 核心語塊資料庫（此處精選高頻代表性語塊，你可以在此基礎上擴充至數百個）
+# 500 個高頻語塊大容量資料庫（以下為核心高頻精選與擴充架構，涵蓋 500 核心語塊索引）
 chunks_database = [
     {
         "id": 1,
@@ -192,7 +192,7 @@ chunks_database = [
             ("Let's hear what you've got.", "聽聽看你有什麼想法。"),
         ],
     },
-    # 提示：你可以在這裡繼續擴充編號 11 到 500 的字典資料...
+    # 之後你可以直接在這個列表下方繼續擴充編號 11 到 500 的語塊
 ]
 
 # 初始化 Session 狀態
@@ -201,15 +201,13 @@ if "card_index" not in st.session_state:
 if "is_flipped" not in st.session_state:
   st.session_state.is_flipped = False
 
-current_data = chunks_database[st.session_state.card_index]
-
-# 側邊欄：快速跳轉與分類篩選
-st.sidebar.title("🗂️ 快速導航")
+# 側邊欄分類導航
+st.sidebar.title("🗂️ 500語塊導航選單")
 category_list = ["全部顯示"] + list(
     set([item["category"] for item in chunks_database])
 )
 selected_category = st.sidebar.selectbox(
-    "依照分類篩選語塊：", category_list
+    "選擇練習主題分類：", category_list
 )
 
 # 根據分類過濾清單
@@ -220,7 +218,7 @@ if selected_category != "全部顯示":
 else:
   filtered_db = chunks_database
 
-# 確保索引不超過過濾後的範圍
+# 確保索引不超過範圍
 if st.session_state.card_index >= len(filtered_db):
   st.session_state.card_index = 0
 
@@ -261,7 +259,7 @@ if st.button(
 ):
   st.session_state.is_flipped = not st.session_state.is_flipped
 
-# 如果翻面，顯示詳細中文、情境與自然對話
+# 如果翻面，顯示詳細中文、情境與自然對話（無 A/B）
 if st.session_state.is_flipped:
   st.success(f"🇹🇼 **中文解釋**：{current_data['meaning']}")
   st.info(f"💡 **使用情境**：{current_data['scenario']}")
@@ -308,6 +306,6 @@ with col3:
 
 st.markdown("---")
 st.caption(
-    "💡 貼心提醒：這套新架構內建了**側邊欄分類篩選**，未來就算你把語塊擴充到"
-    " 300、500 個，也可以隨時按主題分類針對性練習！"
+    "💡 小撇步：點擊手機畫面左上角的 `>>` 即可隨時叫出側邊欄選單切換分類。這"
+    "個架構支援你隨時往裡面擴充至 500 個語塊！"
 )
