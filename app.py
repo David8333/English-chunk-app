@@ -15,7 +15,12 @@ st.set_page_config(
 # 語音功能
 # =========================================================
 def speak_text(text, key_suffix=""):
-    safe_text = text.replace("\\", "\\\\").replace("'", "\\'").replace("\n", " ")
+    safe_text = (
+        text
+        .replace("\\", "\\\\")
+        .replace("'", "\\'")
+        .replace("\n", " ")
+    )
 
     html = f"""
     <script>
@@ -1203,9 +1208,6 @@ if "is_flipped" not in st.session_state:
 if "show_answer" not in st.session_state:
     st.session_state.show_answer = False
 
-if "last_day" not in st.session_state:
-    st.session_state.last_day = st.session_state.day
-
 
 # =========================================================
 # 主標題
@@ -1224,9 +1226,10 @@ with st.sidebar:
 
     st.header("🗂️ 學習導航")
 
+    # 固定 Day 1～18，並增加全部 Chunk
     day_options = ["全部 Chunk"] + [
         f"Day {day}"
-        for day in sorted(set(item["day"] for item in chunks_database))
+        for day in range(1, 19)
     ]
 
     current_day_index = (
@@ -1243,10 +1246,12 @@ with st.sidebar:
 
     # Day 改變
     if selected_day != st.session_state.day:
+
         st.session_state.day = selected_day
         st.session_state.card_index = 0
         st.session_state.is_flipped = False
         st.session_state.show_answer = False
+
         st.rerun()
 
     categories = ["全部顯示"] + sorted(
@@ -1291,12 +1296,14 @@ if selected_category != "全部顯示":
 
 # 沒有資料
 if not filtered_db:
+
     st.warning("目前沒有符合條件的 Chunk。")
     st.stop()
 
 
 # 防止 index 超出範圍
 if st.session_state.card_index >= len(filtered_db):
+
     st.session_state.card_index = 0
 
 
@@ -1343,15 +1350,25 @@ st.divider()
 col1, col2 = st.columns(2)
 
 with col1:
-    st.caption(f"📂 {current_data['category']}")
+
+    st.caption(
+        f"📂 {current_data['category']}"
+    )
 
 with col2:
+
     st.caption(
         f"Day {current_data['day']} / "
         f"#{chunks_database.index(current_data) + 1}"
     )
 
 
+# =========================================================
+# 核心 Chunk
+# 只顯示 Chunk
+# 不再顯示「核心 Chunk」標題
+# 不再顯示下方的語音方塊
+# =========================================================
 st.markdown(
     f"""
     <div style="
@@ -1362,29 +1379,16 @@ st.markdown(
         margin-bottom:10px;
     ">
         <div style="
-            font-size:14px;
-            color:#555;
-            margin-bottom:8px;
-        ">
-            ⭐ 核心 Chunk
-        </div>
-
-        <div style="
             font-size:30px;
             font-weight:bold;
             color:#1b5e20;
+            text-align:center;
         ">
             {current_data["chunk"]}
         </div>
     </div>
     """,
     unsafe_allow_html=True
-)
-
-
-speak_text(
-    current_data["chunk"],
-    f"main_chunk_{current_data['day']}_{st.session_state.card_index}"
 )
 
 
@@ -1445,6 +1449,7 @@ if st.session_state.is_flipped:
         f"💡 使用方式：{current_data['usage']}"
     )
 
+
     # -----------------------------------------------------
     # 補充 Chunk
     # -----------------------------------------------------
@@ -1461,15 +1466,18 @@ if st.session_state.is_flipped:
         col_a, col_b = st.columns([5, 1])
 
         with col_a:
+
             st.markdown(
                 f"**{supplement}**"
             )
 
         with col_b:
+
             speak_text(
                 supplement,
                 f"supplement_{current_data['day']}_{st.session_state.card_index}_{i}"
             )
+
 
     # -----------------------------------------------------
     # 情境對話
@@ -1515,6 +1523,7 @@ with col1:
         st.session_state.card_index -= 1
 
         if st.session_state.card_index < 0:
+
             st.session_state.card_index = len(filtered_db) - 1
 
         st.session_state.is_flipped = False
@@ -1573,12 +1582,16 @@ with col3:
 
             st.session_state.card_index = 0
 
-            if st.session_state.day != "全部 Chunk":
+            if (
+                st.session_state.day != "全部 Chunk"
+                and selected_category == "全部顯示"
+            ):
 
                 st.balloons()
 
                 st.success(
-                    "🎉 今天 3 個 chunks 都完成了！"
+                    f"🎉 {st.session_state.day} "
+                    f"的 3 個 chunks 都完成了！"
                 )
 
         st.session_state.is_flipped = False
