@@ -26,9 +26,11 @@ def speak_text(text, key_suffix=""):
     <script>
     function speak_{key_suffix}() {{
         window.speechSynthesis.cancel();
+
         const utterance = new SpeechSynthesisUtterance('{safe_text}');
         utterance.lang = 'en-US';
         utterance.rate = 0.9;
+
         window.speechSynthesis.speak(utterance);
     }}
     </script>
@@ -39,16 +41,21 @@ def speak_text(text, key_suffix=""):
             border: none;
             background-color: #f0f2f6;
             border-radius: 8px;
-            padding: 5px 10px;
+            padding: 6px 14px;
             cursor: pointer;
             font-size: 14px;
+            margin-top: 2px;
+            margin-bottom: 2px;
         "
     >
         🔊 聽發音
     </button>
     """
 
-    st.components.v1.html(html, height=45)
+    st.components.v1.html(
+        html,
+        height=42
+    )
 
 
 # =========================================================
@@ -1226,7 +1233,6 @@ with st.sidebar:
 
     st.header("🗂️ 學習導航")
 
-    # 固定 Day 1～18，並增加全部 Chunk
     day_options = ["全部 Chunk"] + [
         f"Day {day}"
         for day in range(1, 19)
@@ -1244,7 +1250,6 @@ with st.sidebar:
         index=current_day_index
     )
 
-    # Day 改變
     if selected_day != st.session_state.day:
 
         st.session_state.day = selected_day
@@ -1284,7 +1289,6 @@ else:
     ]
 
 
-# 分類篩選
 if selected_category != "全部顯示":
 
     filtered_db = [
@@ -1294,14 +1298,12 @@ if selected_category != "全部顯示":
     ]
 
 
-# 沒有資料
 if not filtered_db:
 
     st.warning("目前沒有符合條件的 Chunk。")
     st.stop()
 
 
-# 防止 index 超出範圍
 if st.session_state.card_index >= len(filtered_db):
 
     st.session_state.card_index = 0
@@ -1366,8 +1368,6 @@ with col2:
 # =========================================================
 # 核心 Chunk
 # 只顯示 Chunk
-# 不再顯示「核心 Chunk」標題
-# 不再顯示下方的語音方塊
 # =========================================================
 st.markdown(
     f"""
@@ -1376,7 +1376,7 @@ st.markdown(
         padding:22px;
         border-radius:12px;
         margin-top:10px;
-        margin-bottom:10px;
+        margin-bottom:8px;
     ">
         <div style="
             font-size:30px;
@@ -1389,6 +1389,15 @@ st.markdown(
     </div>
     """,
     unsafe_allow_html=True
+)
+
+
+# =========================================================
+# Chunk 發音按鈕
+# =========================================================
+speak_text(
+    current_data["chunk"],
+    f"main_chunk_{current_data['day']}_{st.session_state.card_index}"
 )
 
 
